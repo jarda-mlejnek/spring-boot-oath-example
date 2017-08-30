@@ -1,4 +1,4 @@
-package com.jmlejnek.spring;
+package com.jmlejnek.spring.oauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,8 +30,6 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer
 public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    private static String REALM="MY_OAUTH_REALM";
-
     @Autowired
     private TokenStore tokenStore;
 
@@ -57,12 +55,16 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore).userApprovalHandler(userApprovalHandler)
+        endpoints
+                .tokenStore(tokenStore)
+                .userApprovalHandler(userApprovalHandler)
                 .authenticationManager(authenticationManager);
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer.realm(REALM+"/client");
+        oauthServer
+                .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("isAuthenticated()");
     }
 }

@@ -1,4 +1,4 @@
-package com.jmlejnek.spring;
+package com.jmlejnek.spring.oauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .anonymous().disable()
                 .authorizeRequests()
-                .antMatchers("/oauth/token").permitAll();
+                .antMatchers("/oauth/token").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Override
